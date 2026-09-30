@@ -1,4 +1,4 @@
-import json
+﻿import json
 import chromadb
 import google.generativeai as genai
 from config import GEMINI_API_KEY, CHROMA_PATH, TOP_K
@@ -55,7 +55,7 @@ def ask_question(question: str) -> dict:
                 "sources": []
             }
 
-        system_prompt = \"\"\"You are an Islamic Q&A Chatbot. You must answer questions based ONLY on the provided Context (transcripts from my YouTube channel).
+        system_prompt = """You are an Islamic Q&A Chatbot. You must answer questions based ONLY on the provided Context (transcripts from my YouTube channel).
 
 RULES:
 RULE A: Always write your response entirely in proper Urdu script. Do not use English or Roman Urdu.
@@ -68,7 +68,7 @@ Respond in JSON format:
     "answer": "The formatted text here",
     "sources": []
 }
-\"\"\"
+"""
 
         user_prompt = f"Context:\n{context_str}\n\nQuestion: {question}"
 
@@ -88,6 +88,6 @@ Respond in JSON format:
     except Exception as e:
         error_msg = fallback_links_str if fallback_links_str else "Koi video match nahi hui."
         return {
-            "answer": f"اس وقت گوگل اے آئی جواب دینے سے قاصر ہے، لیکن مجھے آپ کے سوال سے ملتی جلتی یہ ویڈیوز ملی ہیں:\n\n{error_msg}",
+            "answer": f"Ø§Ø³ ÙˆÙ‚Øª Ú¯ÙˆÚ¯Ù„ Ø§Û’ Ø¢Ø¦ÛŒ Ø¬ÙˆØ§Ø¨ Ø¯ÛŒÙ†Û’ Ø³Û’ Ù‚Ø§ØµØ± ÛÛ’ØŒ Ù„ÛŒÚ©Ù† Ù…Ø¬Ú¾Û’ Ø¢Ù¾ Ú©Û’ Ø³ÙˆØ§Ù„ Ø³Û’ Ù…Ù„ØªÛŒ Ø¬Ù„ØªÛŒ ÛŒÛ ÙˆÛŒÚˆÛŒÙˆØ² Ù…Ù„ÛŒ ÛÛŒÚº:\n\n{error_msg}",
             "sources": []
         }
