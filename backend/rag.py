@@ -1,4 +1,4 @@
-﻿import json
+import json
 import chromadb
 import google.generativeai as genai
 from config import GEMINI_API_KEY, CHROMA_PATH, TOP_K
@@ -55,11 +55,11 @@ def ask_question(question: str) -> dict:
                 "sources": []
             }
 
-        system_prompt = """You are an Islamic Q&A Chatbot. You must answer questions based ONLY on the provided Context (transcripts from my YouTube channel).
+        system_prompt = \"\"\"You are an Islamic Q&A Chatbot. You must answer questions based ONLY on the provided Context (transcripts from my YouTube channel).
 
 RULES:
-RULE A: Always write your response entirely in proper Urdu script (Ø§Ø±Ø¯Ùˆ). Do not use English or Roman Urdu.
-RULE B: Look at the Context chunks. Formulate 2 or 3 interesting questions in Urdu (Ø§Ø±Ø¯Ùˆ) related to the topics discussed in these chunks.
+RULE A: Always write your response entirely in proper Urdu script. Do not use English or Roman Urdu.
+RULE B: Look at the Context chunks. Formulate 2 or 3 interesting questions in Urdu related to the topics discussed in these chunks.
 RULE C: Directly answer or address these formulated questions using the context, and IMMEDIATELY place the exact YouTube URL directly below each point.
 RULE D: Even if the user's specific query is not directly answered in the text, you MUST STILL provide related Urdu questions based on the context and give their video links. DO NOT say "Mujhe jawab nahi mila". Always output related Urdu questions!
 
@@ -68,7 +68,7 @@ Respond in JSON format:
     "answer": "The formatted text here",
     "sources": []
 }
-"""
+\"\"\"
 
         user_prompt = f"Context:\n{context_str}\n\nQuestion: {question}"
 
@@ -88,7 +88,6 @@ Respond in JSON format:
     except Exception as e:
         error_msg = fallback_links_str if fallback_links_str else "Koi video match nahi hui."
         return {
-            "answer": f"Ø§Ø³ ÙˆÙ‚Øª Ø³Ø³Ù¹Ù… Ù¾Ø± Ù„ÙˆÚˆ Ø²ÛŒØ§Ø¯Û ÛÙˆÙ†Û’ Ú©ÛŒ ÙˆØ¬Û Ø³Û’ Ù…Ú©Ù…Ù„ Ø¬ÙˆØ§Ø¨ Ù¹Ø§Ø¦Ù¾ Ù†ÛÛŒÚº ÛÙˆ Ø³Ú©Ø§ØŒ Ø§Ù„Ø¨ØªÛ Ø¢Ù¾ Ú©Û’ Ø³ÙˆØ§Ù„ Ø³Û’ Ù…Ù„ØªÛŒ Ø¬Ù„ØªÛŒ ÛŒÛ ÙˆÛŒÚˆÛŒÙˆØ² Ù…ÙˆØ¬ÙˆØ¯ ÛÛŒÚº:\n\n{error_msg}",
+            "answer": f"اس وقت گوگل اے آئی جواب دینے سے قاصر ہے، لیکن مجھے آپ کے سوال سے ملتی جلتی یہ ویڈیوز ملی ہیں:\n\n{error_msg}",
             "sources": []
         }
-
