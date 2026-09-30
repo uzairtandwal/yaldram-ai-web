@@ -3,10 +3,6 @@
     {
       "source": "/api/:path*",
       "destination": "https://yaldrim-mufti-yaldrim.hf.space/api/:path*"
-    },
-    {
-      "source": "/(?!(api|assets)).*",
-      "destination": "/index.html"
     }
   ]
 }
