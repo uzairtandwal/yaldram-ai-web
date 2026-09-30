@@ -1,11 +1,11 @@
 ﻿{
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://yaldrim-mufti-yaldrim.hf.space/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://yaldrim-mufti-yaldrim.hf.space/api/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/(?!(api|assets)).*",
       "destination": "/index.html"
     }
   ]
