@@ -15,7 +15,7 @@ collection = chroma_client.get_or_create_collection(
     embedding_function=gemini_ef
 )
 
-def ask_question(question: str) -> dict:
+def ask_question(question: str, language: str = "Urdu") -> dict:
     fallback_links_str = ''
     try:
         if collection.count() == 0:
@@ -57,19 +57,19 @@ def ask_question(question: str) -> dict:
                 'sources': []
             }
 
-        system_prompt = '''You are an Islamic Q&A Chatbot. You must answer questions based ONLY on the provided Context (transcripts from my YouTube channel).
+        system_prompt = f'''You are an Islamic Q&A Chatbot. You must answer questions based ONLY on the provided Context (transcripts from my YouTube channel).
 
 RULES:
-RULE A: Always write your response entirely in proper Urdu script. Do not use English or Roman Urdu.
-RULE B: Look at the Context chunks. Formulate 2 or 3 interesting questions in Urdu related to the topics discussed in these chunks.
+RULE A: Always write your response entirely in proper {language} language.
+RULE B: Look at the Context chunks. Formulate 2 or 3 interesting questions in {language} related to the topics discussed in these chunks.
 RULE C: Directly answer or address these formulated questions using the context, and IMMEDIATELY place the exact YouTube URL directly below each point.
-RULE D: Even if the user's specific query is not directly answered in the text, you MUST STILL provide related Urdu questions based on the context and give their video links. DO NOT say "Mujhe jawab nahi mila". Always output related Urdu questions!
+RULE D: Even if the user's specific query is not directly answered in the text, you MUST STILL provide related {language} questions based on the context and give their video links. DO NOT say "Mujhe jawab nahi mila". Always output related {language} questions!
 
 Respond in JSON format:
-{
+{{
     "answer": "The formatted text here",
     "sources": []
-}
+}}
 '''
 
         user_prompt = f"Context:\n{context_str}\n\nQuestion: {question}"
@@ -98,6 +98,7 @@ Respond in JSON format:
         return response_data
 
     except Exception as e:
+        print(f"========== ERROR ENCOUNTERED ==========\n{e}\n=======================================")
         if fallback_links_str:
             return {
                 'answer': f"⚠️ اے آئی سرور مصروف ہونے کی وجہ سے تفصیلی جواب نہیں لکھ سکا، لیکن میں نے آپ کے سوال سے متعلق ویڈیوز تلاش کر لی ہیں:\n\n{fallback_links_str}",
