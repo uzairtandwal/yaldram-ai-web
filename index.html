@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Mufti Hassan Raza Yaldram Lectures — AI Chatbot with Video Timestamps | Yaldram AI</title>
+    <title>Mufti Hassan Raza Yaldram Lectures â€” AI Chatbot with Video Timestamps | Yaldram AI</title>
     <meta name="description" content="Ask any Islamic question and get instant answers with exact video timestamps from Mufti Hassan Raza Yaldram's 580+ lectures on Quran, Hadith, Fiqh, and Islamic history. Free AI chatbot." />
     <meta name="keywords" content="Mufti Hassan Raza Yaldram, Mufti Hassan Raza Yaldram lectures, Mufti Hassan Raza Yaldram Quran, Mufti Hassan Raza Yaldram hadith, Islamic chatbot, AI Islamic answers, WhatsApp chatbot, Islamic video timestamps, Quran chatbot, Hadith chatbot, Tafseer, Seerah, Islamic history, free Islamic AI" />
     <meta name="author" content="Yaldram AI" />
@@ -35,10 +35,10 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://localhost:3000/" />
-    <meta property="og:title" content="Mufti Hassan Raza Yaldram Lectures — AI Chatbot with Video Timestamps" />
+    <meta property="og:title" content="Mufti Hassan Raza Yaldram Lectures â€” AI Chatbot with Video Timestamps" />
     <meta property="og:description" content="Ask Islamic questions and get answers with exact timestamps from Mufti Hassan Raza Yaldram's 580+ lectures on Quran, Hadith, Fiqh, and Islamic history." />
     <meta property="og:image" content="https://localhost:3000/og-image.jpeg" />
-    <meta property="og:image:alt" content="Yaldram AI — Islamic AI Chatbot" />
+    <meta property="og:image:alt" content="Yaldram AI â€” Islamic AI Chatbot" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Yaldram AI" />
@@ -47,10 +47,10 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://localhost:3000/" />
-    <meta name="twitter:title" content="Mufti Hassan Raza Yaldram Lectures — AI Chatbot with Video Timestamps" />
+    <meta name="twitter:title" content="Mufti Hassan Raza Yaldram Lectures â€” AI Chatbot with Video Timestamps" />
     <meta name="twitter:description" content="Ask Islamic questions and get answers with exact timestamps from Mufti Hassan Raza Yaldram's 580+ lectures on Quran, Hadith, Fiqh, and Islamic history." />
     <meta name="twitter:image" content="https://localhost:3000/og-image.jpeg" />
-    <meta name="twitter:image:alt" content="Yaldram AI — Islamic AI Chatbot" />
+    <meta name="twitter:image:alt" content="Yaldram AI â€” Islamic AI Chatbot" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/" />
@@ -163,6 +163,36 @@
     <link rel="stylesheet" crossorigin href="assets/index-C9t9TrNI.css">
   </head>
   <body>
+    <!-- Language Selector Dropdown -->
+    <div style="position: fixed; top: 15px; left: 15px; z-index: 9999; background: white; padding: 5px 10px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; border: 1px solid #10b981;">
+      <label for="agy-lang" style="font-family: sans-serif; font-size: 14px; font-weight: bold; color: #10b981;">Language:</label>
+      <select id="agy-lang" style="border: none; outline: none; font-family: sans-serif; font-size: 14px; background: transparent; cursor: pointer; color: #333;">
+        <option value="Urdu">Urdu (اردو)</option>
+        <option value="Roman Urdu">Roman Urdu</option>
+        <option value="Hindi">Hindi (हिंदी)</option>
+        <option value="English">English</option>
+      </select>
+    </div>
+
+    <!-- Monkey Patch Fetch to inject language -->
+    <script>
+      const originalFetch = window.fetch;
+      window.fetch = async function(url, options) {
+        if (url && (url.includes('/api/chat') || url.includes('/ask'))) {
+          const langSelect = document.getElementById('agy-lang');
+          if (langSelect && options && options.body && typeof options.body === 'string') {
+            try {
+              let bodyObj = JSON.parse(options.body);
+              bodyObj.language = langSelect.value;
+              options.body = JSON.stringify(bodyObj);
+            } catch(e) {
+              console.error("Failed to inject language into fetch", e);
+            }
+          }
+        }
+        return originalFetch.apply(this, arguments);
+      };
+    </script>
     <div id="root"></div>
     <script>
       // Safe dynamic replacement script
